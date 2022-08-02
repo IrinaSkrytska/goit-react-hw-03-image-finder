@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export default async function fetchImages(searchKey, page) {
   const axios = require('axios');
 
