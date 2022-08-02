@@ -29,10 +29,10 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const prevSearchInput = prevState.seachKey;
-    const nextSearchInput = this.state.seachKey;
-    const prevPage = prevState.page;
-    const nextPage = this.state.page;
+    // const prevSearchInput = prevState.seachKey;
+    // const nextSearchInput = this.state.seachKey;
+    // const prevPage = prevState.page;
+    // const nextPage = this.state.page;
     const { searchKey, page } = this.state;
 
     fetchImages(searchKey, page).then(result =>
