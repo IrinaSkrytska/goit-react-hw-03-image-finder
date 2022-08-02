@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default async function fetchImages(searchKey, page) {
   const axios = require('axios');
 
@@ -7,13 +9,15 @@ export default async function fetchImages(searchKey, page) {
 
   const images = await axios.get(URL);
 
-  const returnedImages = images.data.hits.map(image => {
-    return {
-      id: image.id,
-      largeImageURL: image.largeImageURL,
-      tags: image.tags,
-      webformatURL: image.webformatURL,
-    };
-  });
+  const returnedImages = images.data.hits.map(
+    ({ id, largeImageURL, tags, webFormatURL }) => {
+      return {
+        id,
+        largeImageURL,
+        tags,
+        webFormatURL,
+      };
+    }
+  );
   return returnedImages;
 }

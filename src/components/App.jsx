@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import fetchImages from 'services/pixabay-api';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
+import Button from './Button';
 
 export class App extends Component {
   static propTypes = {
@@ -13,6 +14,7 @@ export class App extends Component {
         page: PropTypes.number.isRequired,
         largeImage: PropTypes.string,
         largeImageAlt: PropTypes.string,
+        status: PropTypes.string.isRequired,
       })
     ),
   };
@@ -23,6 +25,7 @@ export class App extends Component {
     page: 1,
     largeImage: '',
     largeImageAlt: '',
+    status: 'idle',
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -30,27 +33,21 @@ export class App extends Component {
     const nextSearchInput = this.state.seachKey;
     const prevPage = prevState.page;
     const nextPage = this.state.page;
-    const { page } = this.state;
+    const { searchKey, page } = this.state;
 
-    fetchImages(nextSearchInput, nextPage).then(result => {
-      if (nextSearchInput !== prevSearchInput) {
-        fetchImages(nextSearchInput, page).then(res =>
-          this.setState({ gallery: res })
-        );
-
-        if (prevPage !== nextPage && nextPage !== 1) {
-          fetchImages(nextSearchInput, nextPage).then(res => {
-            this.setState(prevState => ({
-              gallery: [...prevState.gallery, ...res],
-            }));
-          });
-        }
-      }
-    });
+    fetchImages(searchKey, page).then(result =>
+      this.setState({
+        gallery: result,
+      })
+    );
   }
 
   onFormSubmitHandler = ({ searchInput }) => {
     this.setState({ searchKey: searchInput, page: 1 });
+  };
+
+  onLoadButtonClick = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
   render() {
@@ -60,6 +57,9 @@ export class App extends Component {
       <div>
         <Searchbar onSubmit={this.onFormSubmitHandler} />
         <ImageGallery gallery={gallery} />
+        {this.state.status === 'resolved' && gallery.length >= 12 && (
+          <Button onLoadMore={this.onLoadButtonClick} />
+        )}
       </div>
     );
   }
