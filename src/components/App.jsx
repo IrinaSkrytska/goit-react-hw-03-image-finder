@@ -57,7 +57,7 @@ export class App extends Component {
       <div>
         <Searchbar onSubmit={this.onFormSubmitHandler} />
         <ImageGallery gallery={gallery} />
-        {this.state.status === 'resolved' && gallery.length >= 12 && (
+        {gallery.length !== 0 && gallery.length >= 12 && (
           <Button onLoadMore={this.onLoadButtonClick} />
         )}
       </div>
