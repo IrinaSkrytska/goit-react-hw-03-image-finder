@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import css from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({ webformatURL, tags }) => {
+const ImageGalleryItem = ({ webformatURL, tags, onModal, largeImageURL }) => {
   return (
     <li className={css.gallery_item}>
       <img
@@ -9,6 +9,7 @@ const ImageGalleryItem = ({ webformatURL, tags }) => {
         src={webformatURL}
         alt={tags}
         loading="lazy"
+        onClick={() => onModal(largeImageURL)}
       />
     </li>
   );
@@ -17,6 +18,7 @@ const ImageGalleryItem = ({ webformatURL, tags }) => {
 ImageGalleryItem.propTypes = {
   webformatURL: PropTypes.string,
   tags: PropTypes.string,
+  largeImageURL: PropTypes.string,
 };
 
 export default ImageGalleryItem;

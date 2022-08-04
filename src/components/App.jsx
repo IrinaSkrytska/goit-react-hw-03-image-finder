@@ -4,6 +4,7 @@ import fetchImages from 'services/pixabay-api';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
+import Modal from './Modal';
 
 export class App extends Component {
   static propTypes = {
@@ -25,6 +26,7 @@ export class App extends Component {
     page: 1,
     largeImage: '',
     largeImageAlt: '',
+    showModal: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,7 +38,7 @@ export class App extends Component {
     const nextPage = page;
 
     if (prevSearchInput !== nextSearchInput || prevPage !== nextPage) {
-      fetchImages(searchKey, page).then(result => {
+      fetchImages(nextSearchInput, nextPage).then(result => {
         if (nextPage === 1) {
           if (result.length === 0) {
             return 'No images found';
@@ -58,15 +60,27 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
+  openModal = evt => {
+    this.setState({ showModal: true });
+    this.setState({ largeImage: evt.largeImageURL });
+  };
+
+  closeModal = evt => {
+    this.setState(({ showModal }) => ({ showModal: !showModal }));
+  };
+
   render() {
-    const { gallery } = this.state;
+    const { gallery, showModal, largeImage } = this.state;
 
     return (
       <div>
         <Searchbar onSubmit={this.onFormSubmitHandler} />
-        <ImageGallery images={gallery} />
+        <ImageGallery images={gallery} onModalClick={this.openModal} />
         {gallery.length !== 0 && gallery.length >= 12 && (
           <Button onLoadMore={this.onLoadButtonClick} />
+        )}
+        {showModal && (
+          <Modal onClose={this.closeModal} largeImage={largeImage} />
         )}
       </div>
     );
