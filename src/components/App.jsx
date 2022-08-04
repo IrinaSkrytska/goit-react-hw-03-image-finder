@@ -29,17 +29,26 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // const prevSearchInput = prevState.seachKey;
-    // const nextSearchInput = this.state.seachKey;
-    // const prevPage = prevState.page;
-    // const nextPage = this.state.page;
     const { searchKey, page } = this.state;
 
-    fetchImages(searchKey, page).then(result =>
-      this.setState({
-        gallery: result,
-      })
-    );
+    const prevSearchInput = prevState.seachKey;
+    const nextSearchInput = searchKey;
+    const prevPage = prevState.page;
+    const nextPage = page;
+
+    if (prevSearchInput !== nextSearchInput || prevPage !== nextPage) {
+      fetchImages(searchKey, page).then(result => {
+        if (nextPage === 1) {
+          if (result.length === 0) {
+            return 'No images found';
+          } else {
+            this.setState({ gallery: result });
+            return;
+          }
+        }
+        this.setState({ gallery: [...prevState.gallery, ...result] });
+      });
+    }
   }
 
   onFormSubmitHandler = ({ searchInput }) => {
@@ -56,7 +65,7 @@ export class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={this.onFormSubmitHandler} />
-        <ImageGallery gallery={gallery} />
+        <ImageGallery images={gallery} />
         {gallery.length !== 0 && gallery.length >= 12 && (
           <Button onLoadMore={this.onLoadButtonClick} />
         )}

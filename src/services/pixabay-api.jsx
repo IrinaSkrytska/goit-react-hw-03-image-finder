@@ -8,12 +8,12 @@ export default async function fetchImages(searchKey, page) {
   const images = await axios.get(URL);
 
   const returnedImages = images.data.hits.map(
-    ({ id, largeImageURL, tags, webFormatURL }) => {
+    ({ id, largeImageURL, tags, webformatURL }) => {
       return {
         id,
         largeImageURL,
         tags,
-        webFormatURL,
+        webformatURL,
       };
     }
   );
