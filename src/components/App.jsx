@@ -5,6 +5,7 @@ import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
 import Modal from './Modal';
+import Loader from './Loader';
 
 export class App extends Component {
   static propTypes = {
@@ -27,6 +28,7 @@ export class App extends Component {
     largeImage: '',
     largeImageAlt: '',
     showModal: false,
+    loading: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -38,11 +40,24 @@ export class App extends Component {
     const nextPage = page;
 
     if (prevSearchInput !== nextSearchInput || prevPage !== nextPage) {
+      this.setState({ loading: true });
+
       fetchImages(nextSearchInput, nextPage).then(result => {
-        if (result.length === 0) {
-          return alert('No images found');
+        if (nextPage === 1) {
+          if (result.length === 0) {
+            this.setState({ loading: false });
+            alert('No images found');
+          } else {
+            this.setState({
+              gallery: result,
+              loading: false,
+            });
+          }
         }
-        this.setState({ gallery: [...prevState.gallery, ...result] });
+        this.setState({
+          gallery: [...prevState.gallery, ...result],
+          loading: false,
+        });
       });
     }
   }
@@ -65,15 +80,17 @@ export class App extends Component {
   };
 
   render() {
-    const { gallery, showModal, largeImage } = this.state;
+    const { gallery, showModal, largeImage, loading } = this.state;
 
     return (
       <div>
         <Searchbar onSubmit={this.onFormSubmitHandler} />
         <ImageGallery images={gallery} onModalClick={this.openModal} />
+
         {gallery.length !== 0 && gallery.length >= 12 && (
           <Button onLoadMore={this.onLoadButtonClick} />
         )}
+        {loading && <Loader />}
         {showModal && (
           <Modal onClose={this.closeModal} largeImage={largeImage} />
         )}
