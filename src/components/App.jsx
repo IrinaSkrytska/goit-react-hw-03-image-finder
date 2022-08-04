@@ -21,7 +21,7 @@ export class App extends Component {
   };
 
   state = {
-    seachKey: '',
+    searchKey: '',
     gallery: [],
     page: 1,
     largeImage: '',
@@ -32,7 +32,7 @@ export class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { searchKey, page } = this.state;
 
-    const prevSearchInput = prevState.seachKey;
+    const prevSearchInput = prevState.searchKey;
     const nextSearchInput = searchKey;
     const prevPage = prevState.page;
     const nextPage = page;
