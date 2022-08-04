@@ -39,13 +39,8 @@ export class App extends Component {
 
     if (prevSearchInput !== nextSearchInput || prevPage !== nextPage) {
       fetchImages(nextSearchInput, nextPage).then(result => {
-        if (nextPage === 1) {
-          if (result.length === 0) {
-            return 'No images found';
-          } else {
-            this.setState({ gallery: result });
-            return;
-          }
+        if (result.length === 0) {
+          return alert('No images found');
         }
         this.setState({ gallery: [...prevState.gallery, ...result] });
       });
@@ -60,9 +55,9 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  openModal = evt => {
+  openModal = largeImageURL => {
     this.setState({ showModal: true });
-    this.setState({ largeImage: evt.largeImageURL });
+    this.setState({ largeImage: largeImageURL });
   };
 
   closeModal = evt => {
