@@ -25,7 +25,6 @@ export class App extends Component {
     page: 1,
     largeImage: '',
     largeImageAlt: '',
-    status: 'idle',
   };
 
   componentDidUpdate(prevProps, prevState) {
