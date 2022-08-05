@@ -39,7 +39,10 @@ export class App extends Component {
     const prevPage = prevState.page;
     const nextPage = page;
 
-    if (nextSearchInput !== prevSearchInput) {
+    if (
+      nextSearchInput !== prevSearchInput ||
+      (prevPage !== nextPage && nextPage !== 1)
+    ) {
       this.setState({ loading: true });
 
       fetchImages(nextSearchInput, nextPage)
@@ -47,18 +50,6 @@ export class App extends Component {
           if (result.length === 0) {
             alert('No images found');
           }
-
-          this.setState({ gallery: result });
-        })
-        .catch(error => console.log(error))
-        .finally(() => this.setState({ loading: false }));
-    }
-
-    if (prevPage !== nextPage && nextPage !== 1) {
-      this.setState({ loading: true });
-
-      fetchImages(nextSearchInput, nextPage)
-        .then(result => {
           this.setState(prevState => ({
             gallery: [...prevState.gallery, ...result],
           }));
@@ -92,11 +83,11 @@ export class App extends Component {
       <div>
         <Searchbar onSubmit={this.onFormSubmitHandler} />
         <ImageGallery images={gallery} onModalClick={this.openModal} />
-
         {gallery.length !== 0 && gallery.length >= 12 && (
           <Button onLoadMore={this.onLoadButtonClick} />
         )}
         {loading && <Loader />}
+
         {showModal && (
           <Modal onClose={this.closeModal} largeImage={largeImage} />
         )}
