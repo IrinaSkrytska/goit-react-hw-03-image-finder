@@ -39,10 +39,7 @@ export class App extends Component {
     const prevPage = prevState.page;
     const nextPage = page;
 
-    if (
-      nextSearchInput !== prevSearchInput ||
-      (prevPage !== nextPage && nextPage !== 1)
-    ) {
+    if (nextSearchInput !== prevSearchInput || prevPage !== nextPage) {
       this.setState({ loading: true });
 
       fetchImages(nextSearchInput, nextPage)
