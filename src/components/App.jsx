@@ -87,7 +87,6 @@ export class App extends Component {
           <Button onLoadMore={this.onLoadButtonClick} />
         )}
         {loading && <Loader />}
-
         {showModal && (
           <Modal onClose={this.closeModal} largeImage={largeImage} />
         )}
