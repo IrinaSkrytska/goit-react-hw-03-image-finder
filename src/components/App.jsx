@@ -6,6 +6,8 @@ import ImageGallery from './ImageGallery';
 import Button from './Button';
 import Modal from './Modal';
 import Loader from './Loader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   static propTypes = {
@@ -45,7 +47,9 @@ export class App extends Component {
       fetchImages(nextSearchInput, nextPage)
         .then(result => {
           if (result.length === 0) {
-            alert('No images found');
+            toast.error('Please, enter a valid request!', {
+              position: toast.POSITION.TOP_RIGHT,
+            });
           }
           this.setState(prevState => ({
             gallery: [...prevState.gallery, ...result],
@@ -87,6 +91,7 @@ export class App extends Component {
         {showModal && (
           <Modal onClose={this.closeModal} largeImage={largeImage} />
         )}
+        <ToastContainer />
       </div>
     );
   }
