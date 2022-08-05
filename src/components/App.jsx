@@ -39,26 +39,32 @@ export class App extends Component {
     const prevPage = prevState.page;
     const nextPage = page;
 
-    if (prevSearchInput !== nextSearchInput || prevPage !== nextPage) {
+    if (nextSearchInput !== prevSearchInput) {
       this.setState({ loading: true });
 
-      fetchImages(nextSearchInput, nextPage).then(result => {
-        if (nextPage === 1) {
+      fetchImages(nextSearchInput, nextPage)
+        .then(result => {
           if (result.length === 0) {
-            this.setState({ loading: false });
             alert('No images found');
-          } else {
-            this.setState({
-              gallery: result,
-              loading: false,
-            });
           }
-        }
-        this.setState({
-          gallery: [...prevState.gallery, ...result],
-          loading: false,
-        });
-      });
+
+          this.setState({ gallery: result });
+        })
+        .catch(error => console.log(error))
+        .finally(() => this.setState({ loading: false }));
+    }
+
+    if (prevPage !== nextPage && nextPage !== 1) {
+      this.setState({ loading: true });
+
+      fetchImages(nextSearchInput, nextPage)
+        .then(result => {
+          this.setState(prevState => ({
+            gallery: [...prevState.gallery, ...result],
+          }));
+        })
+        .catch(error => console.log(error))
+        .finally(() => this.setState({ loading: false }));
     }
   }
 
