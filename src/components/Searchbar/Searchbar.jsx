@@ -37,14 +37,14 @@ class Searchbar extends Component {
     const { searchInput } = this.state;
 
     return (
-      <header className={css.Searchbar}>
-        <form className={css.SearchForm_button} onSubmit={this.handleSubmit}>
-          <button type="submit">
-            <span>Search</span>
+      <header className={css.searchbar}>
+        <form className={css.searchForm} onSubmit={this.handleSubmit}>
+          <button className={css.searchForm_button} type="submit">
+            <span className={css.searchForm_button_label}>Search</span>
           </button>
 
           <input
-            className={css.SearchForm_input}
+            className={css.searchForm_input}
             type="text"
             name="search"
             value={searchInput}

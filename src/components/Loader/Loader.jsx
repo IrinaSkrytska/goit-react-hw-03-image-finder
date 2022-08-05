@@ -5,10 +5,11 @@ const Loader = () => {
   return (
     <div className={css.loader}>
       <RotatingLines
-        strokeColor="grey"
-        strokeWidth="5"
-        animationDuration="0.75"
-        width="96"
+        height="80"
+        width="80"
+        radius="9"
+        color="green"
+        ariaLabel="three-dots-loading"
         visible={true}
       />
     </div>
