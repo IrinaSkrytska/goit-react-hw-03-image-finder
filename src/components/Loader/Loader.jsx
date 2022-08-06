@@ -7,7 +7,7 @@ const Loader = () => {
       <RotatingLines
         strokeColor="grey"
         strokeWidth="5"
-        animationDuration="1.5"
+        animationDuration={1.5}
         width="96"
         visible={true}
       />
