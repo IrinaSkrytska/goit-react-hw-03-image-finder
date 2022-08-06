@@ -61,7 +61,7 @@ export class App extends Component {
   }
 
   onFormSubmitHandler = ({ searchInput }) => {
-    this.setState({ searchKey: searchInput, page: 1 });
+    this.setState({ searchKey: searchInput, gallery: [] });
   };
 
   onLoadButtonClick = () => {
